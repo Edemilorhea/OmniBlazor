@@ -1,54 +1,111 @@
-﻿@using OmniBlazor.Model
+﻿@inject IAccountService _AccountService;
+@using OmniBlazor.Model
+@using OmniBlazor.Services
 
-<Modal @bind-Visible="@IsVisible" Closing="@OnModalClosing">
-    <ModalContent Centered>
-        <ModalHeader>
-            <ModalTitle>歡迎註冊</ModalTitle>
-        </ModalHeader>
-        <ModalBody>
-            <Field>
-                <FieldLabel>Email</FieldLabel>
-                <TextEdit Placeholder="Enter Email here" />
-            </Field>
-            <Field>
-                <FieldLabel>UserName</FieldLabel>
-                <TextEdit Placeholder="Enter Username here" />
-            </Field>
-            <Field>
-                <FieldLabel>Password</FieldLabel>
-                <TextEdit Placeholder="Enter Password here" Role="TextRole.Password"/>
-            </Field>
-        </ModalBody>
-        <ModalFooter>
-            <Button Color="Color.Secondary" Clicked="@CloseLogingModal">Close</Button>
-            <Button Color="Color.Primary" Clicked="@CloseLogingModal">Save Changes</Button>
-        </ModalFooter>
-    </ModalContent>
-</Modal>
 
+<Validations  @ref="_validations" Mode="ValidationMode.Manual" Model="@register" ValidateOnLoad="false">
+    <Modal @bind-Visible="@IsVisible" Closing="@OnModalClosing">
+        <ModalContent Centered>
+            <ModalHeader>
+                <ModalTitle>歡迎註冊</ModalTitle>
+            </ModalHeader>
+            <ModalBody>
+
+                <Validation>
+                    <Field>
+                        <FieldLabel>Email</FieldLabel>
+                        <TextEdit Placeholder="Enter Email here" @bind-Text="@register.Email">
+                            <Feedback>
+                                <ValidationError />
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
+                </Validation>
+
+                <Validation>
+                    <Field>
+                        <FieldLabel>UserName</FieldLabel>
+                        <TextEdit Placeholder="Enter Username here" @bind-Text="@register.UserName">
+                            <Feedback>
+                                <ValidationError />
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
+                </Validation>
+
+                <Validation>
+                    <Field>
+                        <FieldLabel>Password</FieldLabel>
+                        <TextEdit Placeholder="Enter Password here" Role="TextRole.Password" @bind-Text="@register.Password">
+                            <Feedback>
+                                <ValidationError />
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
+                </Validation>
+
+
+                <Field>
+                    <Paragraph TextColor="@responseTextColor" TextWeight="TextWeight.Bold">@responseMessage</Paragraph>
+                </Field>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@CloseLogingModal">Close</Button>
+                <Button Color="Color.Primary" Clicked="@Submit">Save Changes</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+</Validations>
 @code {
 
-    
+    Validations _validations;
+
+    private Register register = new Register();
+
+    private RegisterResponseDto response { get; set; } = new RegisterResponseDto()
+    {
+        Email = null,
+        UserName = null
+    };
+    private string responseMessage = "";
+    private string responseTextColor;
+
     [Parameter]
     public bool IsVisible { get; set; }
     [Parameter]
     public EventCallback<bool> IsVisibleChanged { get; set; }
+
     private Task CloseLogingModal()
     {
         IsVisible = false;
         return IsVisibleChanged.InvokeAsync(false);
     }
 
-    private Task Submit(){
-        //保存邏輯
-        return CloseLogingModal();
+    private async Task Submit()
+    {
+        if(await _validations.ValidateAll())
+        {
+            var response = await _AccountService.RegisterAsync(register);
+            responseTextColor = response.Success ? "success" : "danger";
+            responseMessage = response.Success ? $"用戶 {response.Data.UserName} 已註冊成功" : response.Message;
+            if (response.Success || response.Data != null)
+            {
+                register = new Register();
+                StateHasChanged();
+                await Task.Delay(5000);
+                responseMessage = "";
+                await CloseLogingModal();
+            }
+        }
+
     }
-    private Task OnModalClosing( ModalClosingEventArgs e )
+
+
+    private Task OnModalClosing(ModalClosingEventArgs e)
     {
         e.Cancel = IsVisible || e.CloseReason != CloseReason.UserClosing;
-        if ( IsVisible == false ) e.Cancel = false;
+        if (IsVisible == false) e.Cancel = false;
         return Task.CompletedTask;
     }
 
 }
-

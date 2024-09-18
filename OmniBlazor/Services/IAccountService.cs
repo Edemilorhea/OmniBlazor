@@ -5,6 +5,7 @@ namespace OmniBlazor.Services;
 
 public interface IAccountService
 {
-    public Task<ServiceResponse<bool>> Register(Register register);
-    public Task<ServiceResponse<bool>> Login(LoginDto login);
+    ServiceResponse<User> UserResponse { get; set; }
+    public Task<ServiceResponse<RegisterResponseDto>> RegisterAsync(Register register);
+    public Task<ServiceResponse<User>> LoginAsync(LoginDto login);
 }
