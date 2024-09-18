@@ -3,12 +3,16 @@
 <Modal @bind-Visible="@IsVisible" Closing="@OnModalClosing">
     <ModalContent Centered>
         <ModalHeader>
-            <ModalTitle>歡迎登入</ModalTitle>
+            <ModalTitle>歡迎註冊</ModalTitle>
         </ModalHeader>
         <ModalBody>
             <Field>
-                <FieldLabel>UserName or Email</FieldLabel>
-                <TextEdit Placeholder="Enter username or Email here" />
+                <FieldLabel>Email</FieldLabel>
+                <TextEdit Placeholder="Enter Email here" />
+            </Field>
+            <Field>
+                <FieldLabel>UserName</FieldLabel>
+                <TextEdit Placeholder="Enter Username here" />
             </Field>
             <Field>
                 <FieldLabel>Password</FieldLabel>
@@ -47,3 +51,4 @@
     }
 
 }
+

@@ -1,6 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
 <LogingFrom @bind-IsVisible="@openLogingModal"/>
+<RegisterForm @bind-IsVisible="@openRegisterModal"/>
 
 <div class="page">
     <div class="sidebar">
@@ -19,7 +20,7 @@
                             <DropdownItem style="margin: auto; display:flex; justify-content:center; align-items: center;" href="#">Logout</DropdownItem>                    
                         </Authorized>
                         <NotAuthorized>
-                            <DropdownItem style="margin: auto; display:flex; justify-content:center; align-items: center;" href="#">Register</DropdownItem>
+                            <DropdownItem style="margin: auto; display:flex; justify-content:center; align-items: center;" @onclick="OpenRegisterModal">Register</DropdownItem>
                             <DropdownDivider/>
                             <DropdownItem style="margin: auto; display:flex; justify-content:center; align-items: center;" @onclick="OpenLogingModal">Login</DropdownItem>                    
                         </NotAuthorized>
@@ -36,10 +37,18 @@
 
 @code{
     private bool openLogingModal = false;
+    private bool openRegisterModal = false;
 
     private Task OpenLogingModal()
     {
         openLogingModal = true;
+
+        return Task.CompletedTask;
+    }
+
+    private Task OpenRegisterModal()
+    {
+        openRegisterModal = true;
 
         return Task.CompletedTask;
     }
