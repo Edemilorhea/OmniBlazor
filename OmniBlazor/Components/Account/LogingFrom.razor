@@ -1,0 +1,52 @@
+﻿@using OmniBlazor.Model
+<Modal @bind-Visible="@IsVisible" Closing="@OnModalClosing">
+    <ModalContent Centered>
+        <ModalHeader>
+            <ModalTitle>歡迎登入</ModalTitle>
+        </ModalHeader>
+        <ModalBody>
+            <Field>
+                <FieldLabel>Email</FieldLabel>
+                <TextEdit Placeholder="Enter Email here" />
+            </Field>
+            <Field>
+                <FieldLabel>Surname</FieldLabel>
+                <TextEdit Placeholder="Enter username here" />
+            </Field>
+            <Field>
+                <FieldLabel>Surname</FieldLabel>
+                <TextEdit Placeholder="Enter username here" Role="TextRole.Password"/>
+            </Field>
+        </ModalBody>
+        <ModalFooter>
+            <Button Color="Color.Secondary" Clicked="@CloseLogingModal">Close</Button>
+            <Button Color="Color.Primary" Clicked="@CloseLogingModal">Save Changes</Button>
+        </ModalFooter>
+    </ModalContent>
+</Modal>
+
+@code {
+
+    
+    [Parameter]
+    public bool IsVisible { get; set; }
+    [Parameter]
+    public EventCallback<bool> IsVisibleChanged { get; set; }
+    private Task CloseLogingModal()
+    {
+        IsVisible = false;
+        return IsVisibleChanged.InvokeAsync(false);
+    }
+
+    private Task Submit(){
+        //保存邏輯
+        return CloseLogingModal();
+    }
+    private Task OnModalClosing( ModalClosingEventArgs e )
+    {
+        e.Cancel = IsVisible || e.CloseReason != CloseReason.UserClosing;
+        if ( IsVisible == false ) e.Cancel = false;
+        return Task.CompletedTask;
+    }
+
+}
