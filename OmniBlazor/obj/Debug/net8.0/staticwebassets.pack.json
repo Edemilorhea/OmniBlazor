@@ -1,0 +1,61 @@
+{
+  "Files": [
+    {
+      "Id": "e:\\Work\\Interview_Test\\OmniSolution\\OmniBlazor\\OmniBlazor\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
+    },
+    {
+      "Id": "e:\\Work\\Interview_Test\\OmniSolution\\OmniBlazor\\OmniBlazor\\obj\\Debug\\net8.0\\compressed\\he17k0fy7p.gz",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
+    },
+    {
+      "Id": "e:\\Work\\Interview_Test\\OmniSolution\\OmniBlazor\\OmniBlazor\\obj\\Debug\\net8.0\\scopedcss\\bundle\\OmniBlazor.styles.css",
+      "PackagePath": "staticwebassets\\OmniBlazor.styles.css"
+    },
+    {
+      "Id": "e:\\Work\\Interview_Test\\OmniSolution\\OmniBlazor\\OmniBlazor\\wwwroot\\css\\app.css",
+      "PackagePath": "staticwebassets\\css\\app.css"
+    },
+    {
+      "Id": "e:\\Work\\Interview_Test\\OmniSolution\\OmniBlazor\\OmniBlazor\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "e:\\Work\\Interview_Test\\OmniSolution\\OmniBlazor\\OmniBlazor\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "e:\\Work\\Interview_Test\\OmniSolution\\OmniBlazor\\OmniBlazor\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "e:\\Work\\Interview_Test\\OmniSolution\\OmniBlazor\\OmniBlazor\\wwwroot\\icon-192.png",
+      "PackagePath": "staticwebassets\\icon-192.png"
+    },
+    {
+      "Id": "e:\\Work\\Interview_Test\\OmniSolution\\OmniBlazor\\OmniBlazor\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "e:\\Work\\Interview_Test\\OmniSolution\\OmniBlazor\\OmniBlazor\\wwwroot\\sample-data\\weather.json",
+      "PackagePath": "staticwebassets\\sample-data\\weather.json"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.OmniBlazor.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.OmniBlazor.props",
+      "PackagePath": "build\\OmniBlazor.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.OmniBlazor.props",
+      "PackagePath": "buildMultiTargeting\\OmniBlazor.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.OmniBlazor.props",
+      "PackagePath": "buildTransitive\\OmniBlazor.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
