@@ -1,4 +1,7 @@
 ﻿@inherits LayoutComponentBase
+
+<LogingFrom @bind-IsVisible="@openLogingModal"/>
+
 <div class="page">
     <div class="sidebar">
         <NavMenu />
@@ -6,7 +9,23 @@
 
     <main>
         <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
+            <Dropdown>
+                    <DropdownToggle Outline="true">
+                        <i class="fa fa-user nav-menu" aria-hidden="true"></i>
+                    </DropdownToggle>
+                <DropdownMenu>
+                        <AuthorizeView Roles="Admin">
+                        <Authorized>
+                            <DropdownItem style="margin: auto; display:flex; justify-content:center; align-items: center;" href="#">Logout</DropdownItem>                    
+                        </Authorized>
+                        <NotAuthorized>
+                            <DropdownItem style="margin: auto; display:flex; justify-content:center; align-items: center;" href="#">Register</DropdownItem>
+                            <DropdownDivider/>
+                            <DropdownItem style="margin: auto; display:flex; justify-content:center; align-items: center;" @onclick="OpenLogingModal">Login</DropdownItem>                    
+                        </NotAuthorized>
+                        </AuthorizeView>
+                </DropdownMenu>
+            </Dropdown>
         </div>
 
         <article class="content px-4">
@@ -14,3 +33,18 @@
         </article>
     </main>
 </div>
+
+@code{
+    private bool openLogingModal = false;
+
+    private Task OpenLogingModal()
+    {
+        openLogingModal = true;
+
+        return Task.CompletedTask;
+    }
+
+}
+
+<style>
+</style>

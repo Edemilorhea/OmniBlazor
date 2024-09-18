@@ -1,7 +1,32 @@
 ﻿@page "/"
+@inject Blazored.LocalStorage.ILocalStorageService localStorage
 
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Hello OmniSolution</h1>
 
-Welcome to your new app.
+<p>感謝參觀我的作品</p>
+
+<p>右上角可以註冊與登入</p>
+
+
+@code{
+    private string message = "Hello, World!";
+    private async Task SaveMessage(MouseEventArgs e)
+    {
+        await localStorage.SetItemAsync("Message", message);
+        message = "Data saved";
+    }
+    private async Task LoadMessage(MouseEventArgs e)
+    {
+        message = await localStorage.GetItemAsync<string>("Message") ?? "Data not found";
+    }
+
+}
+
+<style>
+    article p {
+        font-size: 1.25rem;
+        font-weight: 400;
+    }
+</style>
