@@ -1,5 +1,10 @@
-﻿@inherits LayoutComponentBase
-
+﻿@using Blazored.LocalStorage
+@using OmniBlazor.Services
+@using System.Net.Http.Headers
+@inherits LayoutComponentBase
+@inject IAccountService _AccountService
+@inject ILocalStorageService _localStorageService
+@inject NavigationManager NavigationManager
 <LogingFrom @bind-IsVisible="@openLogingModal" />
 <RegisterForm @bind-IsVisible="@openRegisterModal"/>
 
@@ -17,7 +22,7 @@
                 <DropdownMenu>
                         <AuthorizeView Roles="Omni">
                         <Authorized>
-                            <DropdownItem style="margin: auto; display:flex; justify-content:center; align-items: center;" href="#">Logout</DropdownItem>                    
+                            <DropdownItem style="margin: auto; display:flex; justify-content:center; align-items: center;" @onclick="Logout">Logout</DropdownItem>                    
                         </Authorized>
                         <NotAuthorized>
                             <DropdownItem style="margin: auto; display:flex; justify-content:center; align-items: center;" @onclick="OpenRegisterModal">Register</DropdownItem>
@@ -39,6 +44,7 @@
     private bool openLogingModal = false;
     private bool openRegisterModal = false;
 
+    private LogoutDto logoutDto = new LogoutDto();
     private Task OpenLogingModal()
     {
         openLogingModal = true;
@@ -51,6 +57,26 @@
         openRegisterModal = true;
 
         return Task.CompletedTask;
+    }
+
+    private async Task Logout(){
+        var token = await _localStorageService.GetItemAsStringAsync("authToken");
+        logoutDto.token = token;
+        if(token != null)
+        {
+            try{
+
+                var response = await _AccountService.Lougout(logoutDto);
+                @* await _localStorageService.RemoveItemAsync("authToken"); *@
+
+                NavigationManager.NavigateTo("/", true);
+
+            }catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+        }
+
     }
 
 }

@@ -70,4 +70,20 @@ public class AccountService : IAccountService
             };
         }
     }
+
+    public async Task<ServiceResponse<string>> Lougout(LogoutDto data)
+    {
+
+        _httpClientLoginApi.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", data.token);
+        var response = await _httpClientLoginApi.PostAsJsonAsync<LogoutDto>("logout", data);
+        var content = await response.Content.ReadAsStringAsync();
+        return new ServiceResponse<string>
+        {
+            Success = true,
+            Data = content,
+            Message = "User Not Found"
+        };
+
+    }
+
 }

@@ -8,4 +8,5 @@ public interface IAccountService
     ServiceResponse<User> UserResponse { get; set; }
     public Task<ServiceResponse<RegisterResponseDto>> RegisterAsync(Register register);
     public Task<ServiceResponse<string>> LoginAsync(LoginDto login);
+    public Task<ServiceResponse<string>> Lougout(LogoutDto data);
 }
