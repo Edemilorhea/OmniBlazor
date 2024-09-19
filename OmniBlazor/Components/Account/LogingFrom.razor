@@ -1,43 +1,105 @@
 ﻿@using OmniBlazor.Model
+@using OmniBlazor.Services
+@inject IAccountService _AccountService;
+@inject HttpClient httpClient;
+@inject CustomAuthStateProvider _authStateProvider
+@inject NavigationManager NavigationManager
 
-<Modal @bind-Visible="@IsVisible" Closing="@OnModalClosing">
-    <ModalContent Centered>
-        <ModalHeader>
-            <ModalTitle>歡迎登入</ModalTitle>
-        </ModalHeader>
-        <ModalBody>
-            <Field>
-                <FieldLabel>UserName or Email</FieldLabel>
-                <TextEdit Placeholder="Enter username or Email here" />
-            </Field>
-            <Field>
-                <FieldLabel>Password</FieldLabel>
-                <TextEdit Placeholder="Enter Password here" Role="TextRole.Password"/>
-            </Field>
-        </ModalBody>
-        <ModalFooter>
-            <Button Color="Color.Secondary" Clicked="@CloseLogingModal">Close</Button>
-            <Button Color="Color.Primary" Clicked="@CloseLogingModal">Save Changes</Button>
-        </ModalFooter>
-    </ModalContent>
-</Modal>
+
+<Validations  @ref="_validations" Mode="ValidationMode.Manual" Model="@LoginDto" ValidateOnLoad="false">
+    <Modal @bind-Visible="@IsVisible" Closing="@OnModalClosing">
+        <ModalContent Centered>
+            <ModalHeader>
+                <ModalTitle>歡迎註冊</ModalTitle>
+            </ModalHeader>
+            <ModalBody>
+
+                <Validation>
+                    <Field>
+                        <FieldLabel>Identifier</FieldLabel>
+                        <TextEdit Placeholder="Enter Email here" @bind-Text="@LoginDto.Identifier">
+                            <Feedback>
+                                <ValidationError />
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
+                </Validation>
+
+                <Validation>
+                    <Field>
+                        <FieldLabel>Password</FieldLabel>
+                        <TextEdit Placeholder="Enter Password here" @bind-Text="@LoginDto.Password" Role="TextRole.Password">
+                            <Feedback>
+                                <ValidationError />
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
+                </Validation>
+
+                <Field>
+                    <Paragraph TextColor="@responseTextColor" TextWeight="TextWeight.Bold">@responseMessage</Paragraph>
+                </Field>
+            </ModalBody>
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="@CloseLogingModal">Close</Button>
+                <Button Color="Color.Primary" Clicked="@Submit">Save Changes</Button>
+            </ModalFooter>
+        </ModalContent>
+    </Modal>
+</Validations>
 
 @code {
+    Validations _validations;
 
-    
+    private LoginDto LoginDto = new LoginDto();
+
+    private RegisterResponseDto response { get; set; } = new RegisterResponseDto()
+    {
+        Email = null,
+        UserName = null
+    };
+    private string responseMessage = "";
+    private string responseTextColor = "";
+
     [Parameter]
     public bool IsVisible { get; set; }
     [Parameter]
     public EventCallback<bool> IsVisibleChanged { get; set; }
+
+
     private Task CloseLogingModal()
     {
         IsVisible = false;
         return IsVisibleChanged.InvokeAsync(false);
     }
 
-    private Task Submit(){
-        //保存邏輯
-        return CloseLogingModal();
+
+    private async Task Submit(){
+        if(await _validations.ValidateAll())
+        {
+            //登入邏輯
+            var response = await _AccountService.LoginAsync(LoginDto);
+
+            if(response.Success)
+            {
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", response.Data!);
+                _authStateProvider.MarkUserAsAuthenticated(response.Data!);
+
+                responseMessage = "登入成功";
+                responseTextColor = "success";
+
+                StateHasChanged();
+                await Task.Delay(2000);
+
+                await CloseLogingModal();
+
+                NavigationManager.NavigateTo("/Profile", forceLoad: true);
+
+                return;
+            }
+                responseMessage = "登入失敗";
+                responseTextColor = "danger";
+        }
     }
     private Task OnModalClosing( ModalClosingEventArgs e )
     {

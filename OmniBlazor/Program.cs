@@ -25,7 +25,10 @@ builder.Services.AddHttpClient("LoginApi", client => {
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddCascadingAuthenticationState(); 
 
-builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthSateProvider>();
+
+builder.Services.AddCascadingAuthenticationState();
+builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthStateProvider>();
+builder.Services.AddScoped<CustomAuthStateProvider>();
 builder.Services.AddAuthorizationCore(options=> {
     options.AddPolicy("Omni", policy => policy.RequireClaim("role", "Omni"));
 });

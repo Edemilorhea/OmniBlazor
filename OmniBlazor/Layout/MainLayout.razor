@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 
-<LogingFrom @bind-IsVisible="@openLogingModal"/>
+<LogingFrom @bind-IsVisible="@openLogingModal" />
 <RegisterForm @bind-IsVisible="@openRegisterModal"/>
 
 <div class="page">
@@ -15,7 +15,7 @@
                         <i class="fa fa-user nav-menu" aria-hidden="true"></i>
                     </DropdownToggle>
                 <DropdownMenu>
-                        <AuthorizeView Roles="Admin">
+                        <AuthorizeView Roles="Omni">
                         <Authorized>
                             <DropdownItem style="margin: auto; display:flex; justify-content:center; align-items: center;" href="#">Logout</DropdownItem>                    
                         </Authorized>
